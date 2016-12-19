@@ -1,0 +1,35 @@
+{
+  "name": "rollup-plugin-envs",
+  "version": "0.0.1",
+  "description": "Give it envs and it will give you builds",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigour-io/rollup-plugin-envs.git"
+  },
+  "keywords": [
+    "rollup",
+    "build",
+    "env",
+    "dev",
+    "compile",
+    "prerender"
+  ],
+  "author": "Youri Daamen <youri@vigour.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vigour-io/rollup-plugin-envs/issues"
+  },
+  "homepage": "https://github.com/vigour-io/rollup-plugin-envs#readme",
+  "dependencies": {
+    "falafel": "^2.0.0",
+    "javascript-stringify": "^1.5.0",
+    "static-eval": "git+ssh://git@github.com/vigour-io/static-eval#06a91d834c3ce6e7440c3b197ea11c5865512434"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
+  }
+}

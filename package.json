@@ -2,7 +2,7 @@
   "name": "rollup-plugin-envs",
   "version": "0.2.5",
   "description": "Give it envs and it will give you builds",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "node test"
   },
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/vigour-io/rollup-plugin-envs#readme",
   "dependencies": {
     "javascript-stringify": "^1.5.0",
+    "mkdirp": "^0.5.1",
     "rollup-pluginutils": "^1.5.2",
     "string-hash": "^1.1.1",
     "unflatten": "^1.0.4"

@@ -27,6 +27,7 @@
   "dependencies": {
     "javascript-stringify": "^1.5.0",
     "rollup-pluginutils": "^1.5.2",
+    "string-hash": "^1.1.1",
     "unflatten": "^1.0.4"
   },
   "devDependencies": {

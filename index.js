@@ -137,36 +137,34 @@ module.exports = (options = {}) => {
         if (err) return console.log(err)
         for (let file in written) {
           if (!files[file]) {
-            console.log(path.join(dir, file), written)
             fs.unlink(path.join(dir, file), err => {
               if (err) console.log(err)
             })
           }
         }
-        // for (let file in files) {
-        //   const envs = files[file]
-        //   let str = ''
-        //   for (let name in envs) {
-        //     str += `var ${name} = ${stringify(envs[name])};`
-        //   }
-        //   for (let name in vars) {
-        //     if (!(name in envs)) {
-        //       str += `var ${name} = {};\n`
-        //     }
-        //   }
-        //   const code = `${b.code.replace(STUB, str)}//# sourceMappingURL=${
-        //     path.basename(options.dest)
-        //   }.map`
-        //   fs.writeFile(path.join(dir, file), code, err => {
-        //     if (err) console.log(err)
-        //   })
-        // }
-        // console.log(path.join(dir, CONFIG))
-        // fs.writeFile(
-        //   path.join(dir, CONFIG),
-        //   JSON.stringify({ map, files }, false, 2),
-        //   err => { if (err) console.log(err) }
-        // )
+        for (let file in files) {
+          const envs = files[file]
+          let str = ''
+          for (let name in envs) {
+            str += `var ${name} = ${stringify(envs[name])};`
+          }
+          for (let name in vars) {
+            if (!(name in envs)) {
+              str += `var ${name} = {};\n`
+            }
+          }
+          const code = `${b.code.replace(STUB, str)}//# sourceMappingURL=${
+            path.basename(options.dest)
+          }.map`
+          fs.writeFile(path.join(dir, file), code, err => {
+            if (err) console.log(err)
+          })
+        }
+        fs.writeFile(
+          path.join(dir, CONFIG),
+          JSON.stringify({ map, files }, false, 2),
+          err => { if (err) console.log(err) }
+        )
         written = files
       })
     }

@@ -16,12 +16,12 @@ const envpath = (node, env, str = '') => node.property
 : env + '.' + str
 
 module.exports = (options = {}) => {
-  const filter = createFilter( options.include, options.exclude )
+  const filter = createFilter(options.include, options.exclude)
   const map = {}
   let importPattern, files, written, vars
 
   if (options.imports) {
-    importPattern = new RegExp('(' + options.imports.join( '|' ) + ')')
+    importPattern = new RegExp(`(${options.imports.join('|')})`)
   }
   if (options.vars) {
     vars = {}
@@ -32,13 +32,14 @@ module.exports = (options = {}) => {
     name: 'envs',
     options: opts => {
       if (opts.dest) {
-        const config = path.join(path.dirname(opts.dest, CONFIG))
-        fs.readFile(opts.dest, (err, data) => {
-          if (err) written = err
-          else try {
-            written = JSON.parse(data).files
-          } catch (e) {
-            written = err
+        fs.readFile(path.join(path.dirname(opts.dest, CONFIG)), (err, data) => {
+          if (err) written = {}
+          else {
+            try {
+              written = JSON.parse(data).files
+            } catch (e) {
+              written = {}
+            }
           }
         })
       }
@@ -64,8 +65,9 @@ module.exports = (options = {}) => {
       if (!vars) return null
       const pattern = new RegExp(`(${Object.keys(vars).join('|')})`.replace('$', '\\$'), 'g')
       const found = {}
+      let match
       /* match envs and store any expression using them (@todo: add more) */
-      while (match = pattern.exec( code )) {
+      while ((match = pattern.exec(code))) {
         const start = match.index
         const env = match[0]
         const node = acorn.parseExpressionAt(code, start)
@@ -119,7 +121,7 @@ module.exports = (options = {}) => {
       for (let i = objs.length - 1, obj, clone, file; i >= 0; i--) {
         obj = objs[i]
         clone = Object.assign({}, obj)
-        for (name in clone) {
+        for (let name in clone) {
           if (name in fallbacks && fallbacks[name] === clone[name]) {
             delete clone[name]
           }
@@ -127,8 +129,6 @@ module.exports = (options = {}) => {
         file = hash(JSON.stringify(clone)) + '.js'
         files[file] = unflatten(obj)
       }
-      /* store original code */
-      originalCode = code
     },
     ongenerate (options, b) {
       if (!options.dest) return null
@@ -137,34 +137,36 @@ module.exports = (options = {}) => {
         if (err) return console.log(err)
         for (let file in written) {
           if (!files[file]) {
+            console.log(path.join(dir, file), written)
             fs.unlink(path.join(dir, file), err => {
               if (err) console.log(err)
             })
           }
         }
-        for (let file in files) {
-          const envs = files[file]
-          let str = ''
-          for (let name in envs) {
-            str += `var ${name} = ${stringify(envs[name])};`
-          }
-          for (let name in vars) {
-            if (!(name in envs)) {
-             str += `var ${name} = {};\n`
-            }
-          }
-          const code = `${originalCode.replace(STUB, str)}//# sourceMappingURL=${
-            path.basename(options.dest)
-          }.map`
-          fs.writeFile(path.join(dir, file), code, err => {
-            if (err) console.log(err)
-          })
-        }
-        fs.writeFile(path.join(dir, CONFIG), JSON.stringify({
-          map, files
-        }, false, 2), err => {
-          if (err) console.log(err)
-        })
+        // for (let file in files) {
+        //   const envs = files[file]
+        //   let str = ''
+        //   for (let name in envs) {
+        //     str += `var ${name} = ${stringify(envs[name])};`
+        //   }
+        //   for (let name in vars) {
+        //     if (!(name in envs)) {
+        //       str += `var ${name} = {};\n`
+        //     }
+        //   }
+        //   const code = `${b.code.replace(STUB, str)}//# sourceMappingURL=${
+        //     path.basename(options.dest)
+        //   }.map`
+        //   fs.writeFile(path.join(dir, file), code, err => {
+        //     if (err) console.log(err)
+        //   })
+        // }
+        // console.log(path.join(dir, CONFIG))
+        // fs.writeFile(
+        //   path.join(dir, CONFIG),
+        //   JSON.stringify({ map, files }, false, 2),
+        //   err => { if (err) console.log(err) }
+        // )
         written = files
       })
     }

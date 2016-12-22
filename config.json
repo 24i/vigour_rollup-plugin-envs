@@ -1,0 +1,86 @@
+{
+  "{\"$env_0.man\":true,\"$env_0.device\":\"phone\",\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": true,
+      "device": "phone",
+      "platform": "mac"
+    }
+  },
+  "{\"$env_0.man\":true,\"$env_0.device\":\"phone\"}.js": {
+    "$env_0": {
+      "man": true,
+      "device": "phone",
+      "platform": false
+    }
+  },
+  "{\"$env_0.man\":true,\"$env_0.device\":false,\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": true,
+      "device": false,
+      "platform": "mac"
+    }
+  },
+  "{\"$env_0.man\":true,\"$env_0.device\":false}.js": {
+    "$env_0": {
+      "man": true,
+      "device": false,
+      "platform": false
+    }
+  },
+  "{\"$env_0.man\":true,\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": true,
+      "device": true,
+      "platform": "mac"
+    }
+  },
+  "{\"$env_0.man\":true}.js": {
+    "$env_0": {
+      "man": true,
+      "device": true,
+      "platform": false
+    }
+  },
+  "{\"$env_0.device\":\"phone\",\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": false,
+      "device": "phone",
+      "platform": "mac"
+    }
+  },
+  "{\"$env_0.device\":\"phone\"}.js": {
+    "$env_0": {
+      "man": false,
+      "device": "phone",
+      "platform": false
+    }
+  },
+  "{\"$env_0.device\":false,\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": false,
+      "device": false,
+      "platform": "mac"
+    }
+  },
+  "{\"$env_0.device\":false}.js": {
+    "$env_0": {
+      "man": false,
+      "device": false,
+      "platform": false
+    }
+  },
+  "{\"$env_0.platform\":\"mac\"}.js": {
+    "$env_0": {
+      "man": false,
+      "device": true,
+      "platform": "mac"
+    }
+  },
+  "{}.js": {
+    "$env_0": {
+      "man": false,
+      "device": true,
+      "platform": false
+    }
+  }
+}

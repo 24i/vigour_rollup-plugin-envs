@@ -32,6 +32,7 @@
     "unflatten": "^1.0.4"
   },
   "devDependencies": {
+    "magic-string": "^0.19.0",
     "rollup": "^0.37.2",
     "tape": "^4.6.3"
   }

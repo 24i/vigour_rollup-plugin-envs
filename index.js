@@ -8,7 +8,7 @@ const acorn = require('acorn')
 const path = require('path')
 const fs = require('fs')
 
-const STUB = '$envs_intro'
+const STUB = '//$envs_intro'
 const CONFIG = 'envs.json'
 
 const envpath = (node, env, str = '') => node.property
@@ -18,7 +18,8 @@ const envpath = (node, env, str = '') => node.property
 module.exports = (options = {}) => {
   const filter = createFilter(options.include, options.exclude)
   const map = {}
-  let importPattern, files, written, vars
+  let files = {}
+  let importPattern, varsPattern, written, vars
 
   if (options.imports) {
     importPattern = new RegExp(`(${options.imports.join('|')})`)
@@ -63,11 +64,11 @@ module.exports = (options = {}) => {
     intro: () => STUB,
     transformBundle (code) {
       if (!vars) return null
-      const pattern = new RegExp(`(${Object.keys(vars).join('|')})`.replace('$', '\\$'), 'g')
+      varsPattern = new RegExp(`(${Object.keys(vars).join('|')})`.replace('$', '\\$'), 'g')
       const found = {}
       let match
       /* match envs and store any expression using them (@todo: add more) */
-      while ((match = pattern.exec(code))) {
+      while ((match = varsPattern.exec(code))) {
         const start = match.index
         const env = match[0]
         const node = acorn.parseExpressionAt(code, start)
@@ -131,6 +132,7 @@ module.exports = (options = {}) => {
       }
     },
     ongenerate (options, b) {
+      b.code = b.code.replace(varsPattern, '{}')
       if (!options.dest) return null
       const dir = path.dirname(options.dest)
       mkdirp(dir, err => {
@@ -160,6 +162,7 @@ module.exports = (options = {}) => {
             if (err) console.log(err)
           })
         }
+        files[path.basename(options.dest)] = {}
         fs.writeFile(
           path.join(dir, CONFIG),
           JSON.stringify({ map, files }, false, 2),

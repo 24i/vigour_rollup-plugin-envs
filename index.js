@@ -24,6 +24,7 @@ module.exports = (options = {}) => {
   if (options.imports) {
     importPattern = new RegExp(`(${options.imports.join('|')})`)
   }
+
   if (options.vars) {
     vars = {}
     options.vars.forEach(key => { vars[key] = key })
@@ -140,7 +141,6 @@ module.exports = (options = {}) => {
       }
     },
     ongenerate (options, b) {
-      b.code = b.code.replace(varsPattern, '{}')
       if (!options.dest) return null
       const dir = path.dirname(options.dest)
       mkdirp(dir, err => {
@@ -177,6 +177,7 @@ module.exports = (options = {}) => {
           err => { if (err) console.log(err) }
         )
         written = files
+        b.code = b.code.replace(varsPattern, '{}')
       })
     }
   }

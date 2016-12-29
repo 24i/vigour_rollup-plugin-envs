@@ -72,22 +72,7 @@ module.exports = (options = {}) => {
         const start = match.index
         const env = match[0]
         const node = acorn.parseExpressionAt(code, start)
-        if (node.type === 'BinaryExpression') {
-          const op = node.operator
-          let l, r
-          if (node.left.type === 'Literal') {
-            l = node.right
-            r = node.left
-          } else {
-            l = node.left
-            r = node.right
-          }
-          if (op === '==' || op === '===' || op === '!=' || op === '!==') {
-            const name = envpath(l, env)
-            if (!(name in found)) found[name] = []
-            found[name].push(r.value)
-          }
-        }
+        collect(node, env)
       }
       /* create fallbacks for all checks */
       const fallbacks = {}
@@ -129,6 +114,29 @@ module.exports = (options = {}) => {
         }
         file = hash(JSON.stringify(clone)) + '.js'
         files[file] = unflatten(obj)
+      }
+
+      function collect (node, env) {
+        if (node.type === 'BinaryExpression') {
+          const op = node.operator
+          let l, r
+          if (node.left.type === 'Literal') {
+            l = node.right
+            r = node.left
+          } else {
+            l = node.left
+            r = node.right
+          }
+          if (op === '==' || op === '===' || op === '!=' || op === '!==') {
+            const name = envpath(l, env)
+            if (!(name in found)) found[name] = []
+            found[name].push(r.value)
+          }
+        } else if (node.type) {
+          for (var i in node) {
+            collect(node[i], env)
+          }
+        }
       }
     },
     ongenerate (options, b) {

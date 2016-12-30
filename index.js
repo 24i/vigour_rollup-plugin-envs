@@ -142,6 +142,8 @@ module.exports = (options = {}) => {
     },
     ongenerate (options, b) {
       if (!options.dest) return null
+      const originalCode = b.code
+      b.code = originalCode.replace(varsPattern, '{}')
       const dir = path.dirname(options.dest)
       mkdirp(dir, err => {
         if (err) return console.log(err)
@@ -163,7 +165,7 @@ module.exports = (options = {}) => {
               str += `var ${name} = {};\n`
             }
           }
-          const code = `${b.code.replace(STUB, str)}//# sourceMappingURL=${
+          const code = `${originalCode.replace(STUB, str)}//# sourceMappingURL=${
             path.basename(options.dest)
           }.map`
           fs.writeFile(path.join(dir, file), code, err => {
@@ -177,7 +179,6 @@ module.exports = (options = {}) => {
           err => { if (err) console.log(err) }
         )
         written = files
-        b.code = b.code.replace(varsPattern, '{}')
       })
     }
   }

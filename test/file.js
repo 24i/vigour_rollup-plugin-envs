@@ -11,7 +11,7 @@ if (env.device !== false) {
   console.log('is not tablet')
   // do b
 }
-if (env.platform == 'mac') {
+if (env.platform === 'mac') {
   console.log('is kind of mac')
   // do b
 }

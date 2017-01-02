@@ -8,13 +8,13 @@ test('bundle', t => {
     entry: 'test/file.js',
     plugins: [
       envs({
-        imports: [ 'import.js' ]
+        imports: ['import.js']
       })
     ]
   }).then(bundle => {
-      bundle.write({
-        dest: 'test/dist/output.json'
-      })
+    bundle.write({
+      dest: 'test/dist/index.js'
+    })
     t.pass()
   }).catch(err => t.fail(err))
 })

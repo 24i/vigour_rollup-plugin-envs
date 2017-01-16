@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-envs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Give it envs and it will give you builds",
   "main": "index.js",
   "scripts": {

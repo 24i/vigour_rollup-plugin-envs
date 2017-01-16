@@ -62,7 +62,7 @@ module.exports = (options = {}) => {
         return result
       }
     } : null,
-    intro: () => `var process = { env: ${stringify(process.env)} }\n${STUB}`,
+    intro: () => `var process = process ? process : { env: ${stringify(process.env)} };\n${STUB}`,
     transformBundle (code) {
       if (!vars) return null
       varsPattern = new RegExp(`(${Object.keys(vars).join('|')})`.replace('$', '\\$'), 'g')
